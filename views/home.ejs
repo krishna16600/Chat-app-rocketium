@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <title>Chat App</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <style>
+             input[type=text]{
+                 font-weight: bolder;
+                 font-size: larger;
+                 text-transform: capitalize;
+                 width: 70%;
+                 border-top: none; 
+                 border-left: none; 
+                 border-right: none;
+             }
+            input[type=text]:focus{
+                font-size: larger;
+                text-transform: capitalize;
+                font-weight: bolder;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-light bg-dark n">
+            <a class="navbar-brand text-light">Rocketium Chat App</a>
+          </nav>
+        <div class="container mt-5 text-center">
+            <h3>Welcome to <span>Rocketium</span> chat service.</h3>
+            <small>Please enter your username.</small>
+        </div>
+        <div class="container text-center mt-5">
+            <input type="text" name="user" id="username" class="text-center"  placeholder="Fill your name here..">
+            <button class="btn btn-outline-success btn-sm" onclick="addUser()">Submit</button>
+        </div>
+        
+    </body>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script>
+        
+
+        async function addUser(){
+            let username = document.getElementById('username').value;
+            if(username==null || username==""){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Username can not be empty!',
+                    footer: 'Please fill in your username!',
+                    timer: 2000
+                }) 
+            } else {
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Success, taking you to next step.',
+                    timer: 1000
+                })
+            $.ajax({
+                url: '/registerUser',
+                method: 'POST',
+                data: {
+                    name: username
+                }
+            })
+            .done(res => {
+                if(res==="access"){
+                    window.location = '/avatar-selection/'+username;
+                } else {
+                    alert('Name is already in use, please choose another name');
+                    getUsername();
+                }
+            })
+        }
+    }
+    </script>
+</html>
